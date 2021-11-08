@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('refresh-token', [AuthController::class, 'refresh']);
 Route::group(['middleware' => ['apiJwt']], function() {
     Route::get('admin-category/all', [CategoryController::class, 'index']);
 });
