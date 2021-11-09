@@ -17,13 +17,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = $this->category->all();
-        return response()->json([
-            "success"   => true,
-            "msg"       => null,
-            "data"      => [
-                "categories" => $categories
-            ]
-        ]);
+        $categories = $this->category->paginate(5);
+        return response()->json($categories);
     }
 }
