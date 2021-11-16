@@ -20,6 +20,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('refresh-token', [AuthController::class, 'refresh']);
 Route::group(['middleware' => ['apiJwt']], function() {
     Route::get('admin-category/all', [CategoryController::class, 'index']);
+
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
