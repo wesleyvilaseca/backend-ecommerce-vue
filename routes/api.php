@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DepartamentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('refresh-token', [AuthController::class, 'refresh']);
 Route::group(['middleware' => ['apiJwt']], function() {
-    Route::get('admin-category/all', [CategoryController::class, 'index']);
+    Route::get('admin-departament/search', [DepartamentController::class, 'search']);
+    Route::get('admin-departament/all', [DepartamentController::class, 'index']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });
