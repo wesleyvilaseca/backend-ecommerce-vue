@@ -21,6 +21,7 @@ Route::post('refresh-token', [AuthController::class, 'refresh']);
 Route::group(['middleware' => ['apiJwt']], function() {
     Route::get('admin-departament/search', [DepartamentController::class, 'search']);
     Route::get('admin-departament/all', [DepartamentController::class, 'index']);
+    Route::post('admin-departament/save', [DepartamentController::class, 'save']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });
