@@ -100,7 +100,7 @@ class DepartamentController extends Controller
         $seo = Str::slug($request->name, '-');
 
         if ($request->name !== $departament->name) {
-            $exist = $this->departament->where('seo', '=', $seo )->first();
+            $exist = $this->departament->where('seo', '=', $seo)->first();
             if ($exist) {
                 return response()->json(['error' => 'Já existe um departamento com esse nome!'], 503);
             }
@@ -108,9 +108,9 @@ class DepartamentController extends Controller
 
         $departament->name = $request->name;
         $departament->seo = $seo;
-        
+
         $departament->parent_id = null;
-        
+
         if (sizeof($request->parent_id) > 0) {
             //futuramente vai poder inserir mais de um ao mesmo tempo
             $departament->parent_id = $request->parent_id[0]['id'];
@@ -118,10 +118,31 @@ class DepartamentController extends Controller
 
         $departament = $departament->update();
 
-        if(!$departament){
+        if (!$departament) {
             return response()->json(['error' => 'Houve um erro na requisição, tente novamente!'], 503);
         }
 
         return response()->json(['msg' => 'Departamento atualizado com sucesso!'], 200);
+    }
+
+    public function delete(Request $request)
+    {
+        if (!$request->id) {
+            return response()->json(['error' => 'Informe o id do departamento!'], 503);
+        }
+
+        $departament = $this->departament->find($request->id);
+
+        if (!$departament) {
+            return response()->json(['error' => 'Departamento não localizado'], 503);
+        }
+
+        $departament = $departament->delete();
+
+        if (!$departament) {
+            return response()->json(['error' => 'Houve um erro na requisição, tente novamente!'], 503);
+        }
+
+        return response()->json(['msg' => 'Departamento apagado com sucesso!'], 200);
     }
 }

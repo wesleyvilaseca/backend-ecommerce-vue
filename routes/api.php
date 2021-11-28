@@ -28,6 +28,8 @@ Route::group(['middleware' => ['apiJwt']], function() {
 
     Route::post('admin-departament/update', [DepartamentController::class, 'update']);
 
+    Route::post('admin-departament/delete', [DepartamentController::class, 'delete']);
+
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
