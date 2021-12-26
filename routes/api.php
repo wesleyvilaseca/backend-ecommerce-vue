@@ -29,7 +29,11 @@ Route::group(['middleware' => ['apiJwt']], function() {
     Route::post('admin-departament/delete', [DepartamentController::class, 'delete']);
 
     //produtos
+    Route::get('admin-product/all', [ProductController::class, 'index']);
+    Route::get('admin-product/{id}', [ProductController::class, 'getProduct']);
     Route::post('admin-product/save', [ProductController::class, 'save']);
+    Route::post('admin-product/image/{id}/add', [ProductController::class, 'imageUpload']);
+
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

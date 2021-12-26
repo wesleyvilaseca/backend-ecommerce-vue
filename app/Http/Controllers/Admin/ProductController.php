@@ -25,6 +25,28 @@ class ProductController extends Controller
         $this->product_description     = $product_description;
     }
 
+    public function index(Request $request)
+    {
+        $products = $this->product->paginate(10);
+        if (!$products || (sizeof($products) <= 0)) {
+            return response()->json(['error' => 'Não há produtos cadastrados'], 203);
+        }
+
+        return response()->json($products);
+    }
+
+    public function getProduct(Request $request, $id)
+    {
+        if (!$request->id) return response()->json(['error' => 'Informe o id do produto'], 203);
+        $product = $this->product->find($id);
+
+        if (!$product) {
+            return response()->json(['error' => 'produto não localizado'], 503);
+        }
+
+        return response()->json($product, 200);
+    }
+
     public function save(Request $request)
     {
         if (!$request->name) return response()->json(['error' => 'Informe o nome do produto'], 203);
@@ -63,7 +85,7 @@ class ProductController extends Controller
             return response()->json(['error' => 'erro na operação'], 503);
         }
 
-        
+
         if (sizeof($request->departaments) > 0) {
             $data = [];
             foreach ($request->departaments as $departament) {
@@ -73,5 +95,34 @@ class ProductController extends Controller
         }
 
         return response()->json(['msg' => 'Produto criado com sucesso!'], 200);
+    }
+
+    public function imageUpload(Request $request, int $product_id)
+    {
+        if (!$request->id) return response()->json(['error' => 'Informe o id do produto'], 203);
+        $product = $this->product->find($product_id);
+
+        if (!$product) {
+            return response()->json(['error' => 'produto não localizado'], 203);
+        }
+
+        $image = $request->file('image');
+        if (!$image->hasFile('image')) {
+            return response()->json(['error' => 'Imagem não localizada'], 203);
+        }
+
+        $name = "";
+        if (count($image) > 1) {
+            foreach ($image as $img) {
+                $name = rand() . '.' . $img->getClientOriginalExtension();
+                $image->move(public_path('/uploads/images/product'), $name);
+            }
+            return  response()->json(['error' => 'Imagem cadastrada com sucesso!'], 200);
+        }
+
+        $name = rand() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('/uploads/images/product'), $name);
+
+        return  response()->json(['error' => 'Imagem cadastrada com sucesso!'], 200);
     }
 }
